@@ -223,8 +223,8 @@ else:
 
                 # Generowanie linku (na razie localhost)
                 # UWAGA: Po wrzuceniu do chmury, zmienisz to na swój adres .streamlit.app
-                base_url = "http://localhost:8501"
-                # base_url = "https://twoja-apka.streamlit.app"
+                # base_url = "http://localhost:8501"
+                base_url = "https://party-hero.streamlit.app"
 
                 final_link = f"{base_url}/?id={new_id}"
 
