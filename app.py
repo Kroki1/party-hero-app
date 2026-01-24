@@ -7,17 +7,104 @@ from datetime import datetime
 # --- KONFIGURACJA STRONY ---
 st.set_page_config(page_title="PartyHero 🎈", page_icon="🎈", layout="centered")
 
-# --- CSS (Wygląd) ---
+# --- CSS (Wygląd Mobile-App) ---
 st.markdown("""
     <style>
-    .stApp { background-color: #F0F2F6; }
-    h1 { color: #FF4B4B; text-align: center; }
-    .card { background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    /* Import czcionki, która wygląda nowocześnie */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    /* Tło całej aplikacji */
+    .stApp {
+        background-color: #fce4ec; /* Bardzo jasny róż/beż - przyjemny dla oka */
+        font-family: 'Poppins', sans-serif;
+    }
+
+    /* Ukrycie standardowego menu Streamlit (hamburger i stopka) dla czystego wyglądu */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+
+    /* Stylizacja głównego nagłówka */
+    h1 {
+        color: #e91e63; /* Mocny róż/czerwień */
+        text-align: center;
+        font-weight: 600;
+        padding-bottom: 20px;
+    }
+
+    /* Stylizacja karty (wygląd jak powiadomienie na iPhone) */
+    .card {
+        background-color: white;
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05); /* Delikatny cień */
+        margin-bottom: 20px;
+        border: 1px solid #fce4ec;
+    }
+
+    /* Stylizacja nagłówków wewnątrz karty */
+    h4 {
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 1.1rem;
+    }
+
+    /* Przyciski - robimy je bardziej "klikalne" */
+    .stButton>button {
+        background-color: #e91e63;
+        color: white;
+        border-radius: 50px; /* Zaokrąglone brzegi */
+        height: 50px;
+        width: 100%;
+        border: none;
+        font-weight: 600;
+        box-shadow: 0 4px 6px rgba(233, 30, 99, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .stButton>button:hover {
+        background-color: #c2185b;
+        transform: translateY(-2px); /* Lekkie uniesienie przy najechaniu */
+        box-shadow: 0 6px 8px rgba(233, 30, 99, 0.3);
+    }
+
+    /* Pola tekstowe */
+    .stTextInput>div>div>input {
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        padding: 10px;
+    }
+
+    /* Wyśrodkowanie obrazków */
+    img {
+        border-radius: 15px;
+    }
     </style>
 """, unsafe_allow_html=True)
 
 # --- SŁOWNIK JĘZYKOWY (PL, EN, SV) ---
 translations = {
+    "SV": {
+        "title": "PartyHero 🦸‍♂️",
+        "create_header": "Ordna ett födelsedagskalas på 3 minuter!",
+        "name_label": "Födelsedagsbarnets namn",
+        "date_label": "Datum",
+        "loc_label": "Plats",
+        "theme_label": "Tema",
+        "btn_create": "Skapa Inbjudan ✨",
+        "guest_header": "OSA",
+        "guest_name": "Ditt namn / Barnets namn",
+        "guest_allergy": "Allergier / Kost",
+        "guest_btn": "Skicka svar",
+        "gdpr": "Jag godkänner integritetspolicyn och databehandling.",
+        "success": "Klart! Skicka denna länk till gästerna:",
+        "shop_btn": "Köp en present (Tema):",
+        "ads_label": "Eventets sponsor:",
+        "error_gdpr": "Du måste godkänna GDPR!",
+        "status_yes": "Vi kommer! 🥳",
+        "status_no": "Kan tyvärr inte 😢",
+        "view_event": "Kalasinformaton"
+    },
     "PL": {
         "title": "PartyHero 🦸‍♂️",
         "create_header": "Zorganizuj urodziny w 3 minuty!",
@@ -60,31 +147,10 @@ translations = {
         "status_no": "Sorry, can't make it 😢",
         "view_event": "Event Details"
     },
-    "SV": {
-        "title": "PartyHero 🦸‍♂️",
-        "create_header": "Ordna ett födelsedagskalas på 3 minuter!",
-        "name_label": "Födelsedagsbarnets namn",
-        "date_label": "Datum",
-        "loc_label": "Plats",
-        "theme_label": "Tema",
-        "btn_create": "Skapa Inbjudan ✨",
-        "guest_header": "OSA",
-        "guest_name": "Ditt namn / Barnets namn",
-        "guest_allergy": "Allergier / Kost",
-        "guest_btn": "Skicka svar",
-        "gdpr": "Jag godkänner integritetspolicyn och databehandling.",
-        "success": "Klart! Skicka denna länk till gästerna:",
-        "shop_btn": "Köp en present (Tema):",
-        "ads_label": "Eventets sponsor:",
-        "error_gdpr": "Du måste godkänna GDPR!",
-        "status_yes": "Vi kommer! 🥳",
-        "status_no": "Kan tyvärr inte 😢",
-        "view_event": "Kalasinformaton"
-    }
 }
 
 # --- WYBÓR JĘZYKA ---
-lang_option = st.sidebar.selectbox("Language / Język / Språk", ["PL", "EN", "SV"])
+lang_option = st.sidebar.selectbox("Language / Språk / Język", ["SV", "PL", "EN"])
 t = translations[lang_option]
 
 # --- POŁĄCZENIE Z BAZĄ ---
