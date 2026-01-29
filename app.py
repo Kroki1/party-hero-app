@@ -343,8 +343,8 @@ else:
 
             c_loc = st.text_input(t["loc_label"], placeholder=t["placeholder_loc"])
             c_addr = st.text_input(
-                t["addr_label"], placeholder=t["placeholder_addr"]
-            )  # NOWE POLE
+                placeholder=f'{t["addr_label"]} {t["placeholder_addr"]}'
+            )
 
             st.markdown("---")
             c_gdpr = st.checkbox(t["gdpr"])
@@ -371,6 +371,7 @@ else:
 
                     # Pamiętaj zmienić link na swój!
                     base_url = "https://party-hero-poc.streamlit.app"
+                    # base_url = "http://localhost:8501" # local address for testing
 
                     final_link = f"{base_url}/?id={new_id}"
 
