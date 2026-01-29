@@ -125,8 +125,8 @@ translations = {
         "error_gdpr": "Please accept the privacy policy.",
         "error_fill": "Please fill in required fields.",
         "placeholder_name": "e.g. John's 5th Birthday",
-        "placeholder_loc": "e.g. Central Park",
-        "placeholder_addr": "e.g. 5th Avenue, NY",
+        "placeholder_loc": "e.g. London Eye",
+        "placeholder_addr": "e.g. Belvedere Road 1, London",
         "view_map": "View on Map",
     },
     "SV": {
