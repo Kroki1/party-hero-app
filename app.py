@@ -5,7 +5,7 @@ import uuid
 from datetime import datetime
 
 # --- KONFIGURACJA STRONY ---
-st.set_page_config(page_title="PartyHero", page_icon="🎈", layout="centered")
+st.set_page_config(page_title="PartyHero", page_icon="🎂", layout="centered")
 
 # --- CSS: MODERN & PROFESSIONAL DESIGN ---
 st.markdown(
@@ -80,7 +80,7 @@ translations = {
         "name_label": "Kto świętuje?",
         "date_label": "Kiedy?",
         "loc_label": "Miejsce (Nazwa)",
-        "addr_label": "Dokładny adres",  # NOWE
+        "addr_label": "Dokładny adres",
         "theme_label": "Motyw przewodni",
         "btn_create": "Utwórz Zaproszenie",
         "guest_header": "Potwierdzenie obecności",
@@ -98,8 +98,8 @@ translations = {
         "error_fill": "Wypełnij wymagane pola.",
         "placeholder_name": "np. 5 urodziny Jasia",
         "placeholder_loc": "np. Sala Zabaw Fikołki",
-        "placeholder_addr": "np. ul. Kwiatowa 5, Warszawa",  # NOWE
-        "view_map": "Zobacz na mapie",  # NOWE
+        "placeholder_addr": "np. ul. Kwiatowa 5, Warszawa",
+        "view_map": "Zobacz na mapie",
     },
     "EN": {
         "hero_title": "Your perfect party starts here.",
