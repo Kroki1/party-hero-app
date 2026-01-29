@@ -8,32 +8,28 @@ from datetime import datetime
 st.set_page_config(page_title="PartyHero", page_icon="🎈", layout="centered")
 
 # --- CSS: MODERN & PROFESSIONAL DESIGN ---
-st.markdown("""
+st.markdown(
+    """
     <style>
-    /* Import fontu 'Inter' - standard w nowoczesnych aplikacjach */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
 
-    /* Globalne style */
     .stApp {
-        background-color: #FAFAFA; /* Czysta biel/szarość zamiast różu */
+        background-color: #FAFAFA;
         font-family: 'Inter', sans-serif;
     }
 
-    /* Ukrycie standardowych elementów Streamlit */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
 
-    /* Nagłówki */
     h1, h2, h3 {
-        color: #111827; /* Prawie czarny, nie czysty czarny (lżejszy dla oka) */
+        color: #111827;
         font-weight: 800;
         letter-spacing: -0.02em;
     }
 
-    /* Przycisk Główny (Call to Action) */
     .stButton>button {
-        background-color: #6366f1; /* Indigo - profesjonalny, nowoczesny kolor */
+        background-color: #6366f1;
         color: white;
         border-radius: 8px;
         padding: 0.75rem 1rem;
@@ -50,17 +46,15 @@ st.markdown("""
         transform: translateY(-1px);
     }
 
-    /* Karty (Kontenery) */
     .info-card {
         background-color: white;
         padding: 24px;
         border-radius: 12px;
-        border: 1px solid #E5E7EB; /* Delikatna ramka */
+        border: 1px solid #E5E7EB;
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         margin-bottom: 24px;
     }
 
-    /* Pola formularza */
     .stTextInput>div>div>input, .stSelectbox>div>div>div, .stDateInput>div>div>input {
         border-radius: 8px;
         border: 1px solid #E5E7EB;
@@ -68,21 +62,16 @@ st.markdown("""
         color: #374151;
     }
 
-    /* Stylizacja przełącznika języka (żeby był mały i w rogu) */
-    div[data-testid="stSelectbox"] label {
-        display: none; /* Ukrywa etykietę "Language" */
-    }
-
-    /* Mały tekst */
     .small-text {
         font-size: 0.875rem;
         color: #6B7280;
     }
     </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # --- SŁOWNIK JĘZYKOWY ---
-# Zmienione teksty na bardziej profesjonalne
 translations = {
     "PL": {
         "hero_title": "Twoje idealne przyjęcie zaczyna się tutaj.",
@@ -90,7 +79,8 @@ translations = {
         "create_tab": "Utwórz Wydarzenie",
         "name_label": "Kto świętuje?",
         "date_label": "Kiedy?",
-        "loc_label": "Gdzie?",
+        "loc_label": "Miejsce (Nazwa)",
+        "addr_label": "Dokładny adres",  # NOWE
         "theme_label": "Motyw przewodni",
         "btn_create": "Utwórz Zaproszenie",
         "guest_header": "Potwierdzenie obecności",
@@ -108,7 +98,8 @@ translations = {
         "error_fill": "Wypełnij wymagane pola.",
         "placeholder_name": "np. 5 urodziny Jasia",
         "placeholder_loc": "np. Sala Zabaw Fikołki",
-        "party_details": "Szczegóły wydarzenia"
+        "placeholder_addr": "np. ul. Kwiatowa 5, Warszawa",  # NOWE
+        "view_map": "Zobacz na mapie",  # NOWE
     },
     "EN": {
         "hero_title": "Your perfect party starts here.",
@@ -116,7 +107,8 @@ translations = {
         "create_tab": "Create Event",
         "name_label": "Who is celebrating?",
         "date_label": "When?",
-        "loc_label": "Where?",
+        "loc_label": "Venue Name",
+        "addr_label": "Exact Address",
         "theme_label": "Theme",
         "btn_create": "Create Invitation",
         "guest_header": "RSVP",
@@ -134,7 +126,8 @@ translations = {
         "error_fill": "Please fill in required fields.",
         "placeholder_name": "e.g. John's 5th Birthday",
         "placeholder_loc": "e.g. Central Park",
-        "party_details": "Event Details"
+        "placeholder_addr": "e.g. 5th Avenue, NY",
+        "view_map": "View on Map",
     },
     "SV": {
         "hero_title": "Ditt perfekta kalas börjar här.",
@@ -142,7 +135,8 @@ translations = {
         "create_tab": "Skapa Evenemang",
         "name_label": "Vem firar?",
         "date_label": "När?",
-        "loc_label": "Var?",
+        "loc_label": "Plats (Namn)",
+        "addr_label": "Exakt adress",
         "theme_label": "Tema",
         "btn_create": "Skapa Inbjudan",
         "guest_header": "OSA",
@@ -160,23 +154,18 @@ translations = {
         "error_fill": "Fyll i alla obligatoriska fält.",
         "placeholder_name": "t.ex. Annas 5-års kalas",
         "placeholder_loc": "t.ex. Leo's Lekland",
-        "party_details": "Detaljer"
-    }
+        "placeholder_addr": "t.ex. Storgatan 1, Stockholm",
+        "view_map": "Visa på karta",
+    },
 }
 
-# --- GÓRNY PASEK (HEADER) ---
-# Używamy kolumn, aby umieścić język w rogu, ale w głównej części strony (widoczne na mobile)
+# --- HEADER ---
 col_brand, col_lang = st.columns([8, 2])
-
 with col_brand:
     st.markdown("### PartyHero 🎈")
-
 with col_lang:
-    # Minimalistyczny wybór języka (bez etykiety, same kody)
     lang_option = st.selectbox(
-        "Language",
-        ["PL", "EN", "SV"],
-        label_visibility="collapsed"  # Ukrywa tekst "Language" nad polem
+        "Language", ["SV", "EN", "PL"], label_visibility="collapsed"
     )
 
 t = translations[lang_option]
@@ -206,7 +195,7 @@ def save_guest(data_dict):
     conn.update(worksheet="Guests", data=updated_df)
 
 
-# --- LOGIKA APLIKACJI ---
+# --- LOGIKA ---
 query_params = st.query_params
 current_party_id = query_params.get("id", None)
 
@@ -214,35 +203,60 @@ current_party_id = query_params.get("id", None)
 if current_party_id:
     parties_df = get_data("Parties")
 
-    if not parties_df.empty and str(current_party_id) in parties_df['id'].astype(str).values:
-        party = parties_df[parties_df['id'].astype(str) == str(current_party_id)].iloc[0]
+    if (
+        not parties_df.empty
+        and str(current_party_id) in parties_df["id"].astype(str).values
+    ):
+        party = parties_df[parties_df["id"].astype(str) == str(current_party_id)].iloc[
+            0
+        ]
 
-        # Sekcja Hero zaproszenia
-        st.markdown(f"""
+        st.markdown(
+            f"""
         <div style="text-align: center; padding: 20px 0;">
             <h1 style="margin-bottom: 10px;">🎉 {party['child_name']}</h1>
             <p style="color: #6B7280; font-size: 1.1rem;">Zaprasza na wspólną zabawę!</p>
         </div>
-        """, unsafe_allow_html=True)
+        """,
+            unsafe_allow_html=True,
+        )
 
-        # Karta ze szczegółami (Biała karta na szarym tle)
-        st.markdown(f"""
+        # Generowanie linku do Google Maps
+        # Łączymy nazwę miejsca i adres, zamieniamy spacje na plusy
+        map_query = f"{party['location']} {party.get('address', '')}".strip().replace(
+            " ", "+"
+        )
+        map_link = f"https://www.google.com/maps/search/?api=1&query={map_query}"
+
+        # Karta ze szczegółami
+        st.markdown(
+            f"""
         <div class="info-card">
             <h4 style="margin-top:0;">📅 {party['date']}</h4>
-            <h4 style="margin-top:10px;">📍 {party['location']}</h4>
+            <h4 style="margin-top:10px; margin-bottom: 5px;">📍 {party['location']}</h4>
+            <p style="color: #6B7280; font-size: 0.9rem; margin-bottom: 10px;">{party.get('address', '')}</p>
+            <a href="{map_link}" target="_blank" style="color: #6366f1; text-decoration: none; font-weight: 600; font-size: 0.9rem;">🗺️ {t['view_map']}</a>
             <div style="margin-top: 15px; padding: 10px; background-color: #F3F4F6; border-radius: 6px; font-size: 0.9em;">
                 🎨 <b>{t['theme_label']}:</b> {party['theme']}
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        """,
+            unsafe_allow_html=True,
+        )
 
         # Formularz RSVP
         st.markdown(f"### {t['guest_header']}")
-        st.markdown(f"<p class='small-text'>{t['guest_sub']}</p>", unsafe_allow_html=True)
+        st.markdown(
+            f"<p class='small-text'>{t['guest_sub']}</p>", unsafe_allow_html=True
+        )
 
         with st.form("rsvp_form"):
             g_name = st.text_input(t["guest_name"])
-            g_status = st.radio("Decyzja", [t["status_yes"], t["status_no"]], label_visibility="collapsed")
+            g_status = st.radio(
+                "Decyzja",
+                [t["status_yes"], t["status_no"]],
+                label_visibility="collapsed",
+            )
             g_allergy = st.text_input(t["guest_allergy"])
             g_gdpr = st.checkbox(t["gdpr"])
 
@@ -259,7 +273,7 @@ if current_party_id:
                         "guest_name": g_name,
                         "allergy": g_allergy,
                         "status": g_status,
-                        "timestamp": str(datetime.now())
+                        "timestamp": str(datetime.now()),
                     }
                     save_guest(guest_data)
                     st.success(t["success_guest"])
@@ -268,18 +282,20 @@ if current_party_id:
         # Sekcja prezentowa (Afiliacja)
         st.markdown("---")
         st.markdown(f"### 🎁 {t['shop_header']}")
-        theme_query = party['theme'].replace(" ", "+")
+        theme_query = party["theme"].replace(" ", "+")
         aff_link = f"https://www.amazon.se/s?k={theme_query}&tag=partyhero-20"
 
-        # Nowoczesny przycisk linku
-        st.markdown(f"""
+        st.markdown(
+            f"""
         <a href="{aff_link}" target="_blank" style="text-decoration: none;">
             <div style="background-color: white; border: 1px solid #E5E7EB; border-radius: 8px; padding: 15px; display: flex; align-items: center; justify-content: space-between; transition: 0.2s;">
                 <span style="font-weight: 600; color: #111827;">👉 Zobacz pomysły na prezent: {party['theme']}</span>
                 <span style="color: #6366f1;">➔</span>
             </div>
         </a>
-        """, unsafe_allow_html=True)
+        """,
+            unsafe_allow_html=True,
+        )
 
     else:
         st.error("Link nieaktywny / Invalid link.")
@@ -287,17 +303,18 @@ if current_party_id:
             st.query_params.clear()
             st.rerun()
 
-# === WIDOK ORGANIZATORA (LANDING PAGE) ===
+# === WIDOK ORGANIZATORA ===
 else:
-    # Mocne Value Proposition
-    st.markdown(f"""
+    st.markdown(
+        f"""
     <div style="padding: 20px 0 40px 0; text-align: center;">
         <h1 style="font-size: 2.5rem; line-height: 1.2;">{t['hero_title']}</h1>
         <p style="font-size: 1.1rem; color: #4B5563; margin-top: 15px;">{t['hero_sub']}</p>
     </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True,
+    )
 
-    # Formularz w karcie
     with st.container():
         st.markdown(f'<div class="info-card">', unsafe_allow_html=True)
         st.subheader(t["create_tab"])
@@ -307,14 +324,27 @@ else:
 
             col1, col2 = st.columns(2)
             with col1:
-                # Format daty w input to jedno, ale format wyświetlania to DD.MM.YYYY
                 c_date = st.date_input(t["date_label"], format="DD.MM.YYYY")
             with col2:
-                c_theme = st.selectbox(t["theme_label"],
-                                       ["LEGO", "Minecraft", "Frozen", "Peppa Pig", "Spider-Man", "Barbie", "Dinozaury",
-                                        "Piłka Nożna"])
+                # Etykieta Theme teraz będzie widoczna!
+                c_theme = st.selectbox(
+                    t["theme_label"],
+                    [
+                        "LEGO",
+                        "Minecraft",
+                        "Frozen",
+                        "Peppa Pig",
+                        "Spider-Man",
+                        "Barbie",
+                        "Dinozaury",
+                        "Piłka Nożna",
+                    ],
+                )
 
             c_loc = st.text_input(t["loc_label"], placeholder=t["placeholder_loc"])
+            c_addr = st.text_input(
+                t["addr_label"], placeholder=t["placeholder_addr"]
+            )  # NOWE POLE
 
             st.markdown("---")
             c_gdpr = st.checkbox(t["gdpr"])
@@ -331,27 +361,29 @@ else:
                     party_data = {
                         "id": new_id,
                         "child_name": c_name,
-                        "date": c_date.strftime("%d.%m.%Y"),  # Zapisujemy od razu w formacie europejskim
+                        "date": c_date.strftime("%d.%m.%Y"),
                         "location": c_loc,
+                        "address": c_addr,  # ZAPISUJEMY ADRES
                         "theme": c_theme,
-                        "created_at": str(datetime.now())
+                        "created_at": str(datetime.now()),
                     }
                     save_party(party_data)
 
-                    # LINK GENEROWANY (Pamiętaj podmienić base_url po deployu!)
+                    # Pamiętaj zmienić link na swój!
                     base_url = "https://party-hero-poc.streamlit.app"
-                    # base_url = "http://localhost:8501" # Odkomentuj do testów lokalnych
 
                     final_link = f"{base_url}/?id={new_id}"
 
                     st.success(t["success_host"])
                     st.code(final_link)
 
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)
 
-    # Social Proof / Zaufanie (Atrapa na dole)
-    st.markdown("""
+    st.markdown(
+        """
     <div style="text-align: center; margin-top: 40px; color: #9CA3AF; font-size: 0.9rem;">
         🔒 Secure & Private • GDPR Compliant • Free to use
     </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True,
+    )
