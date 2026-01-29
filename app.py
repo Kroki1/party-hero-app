@@ -177,7 +177,7 @@ conn = st.connection("gsheets", type=GSheetsConnection)
 def get_data(worksheet_name):
     try:
         return conn.read(worksheet=worksheet_name, ttl=0)
-    except:
+    except Exception:
         return pd.DataFrame()
 
 
@@ -222,7 +222,6 @@ if current_party_id:
         )
 
         # Generowanie linku do Google Maps
-        # Łączymy nazwę miejsca i adres, zamieniamy spacje na plusy
         map_query = f"{party['location']} {party.get('address', '')}".strip().replace(
             " ", "+"
         )
@@ -305,9 +304,10 @@ if current_party_id:
 
 # === WIDOK ORGANIZATORA ===
 else:
+    # Poprawiony nagłówek bez zbędnego paddingu dolnego
     st.markdown(
         f"""
-    <div style="padding: 20px 0 40px 0; text-align: center;">
+    <div style="padding: 20px 0 10px 0; text-align: center;">
         <h1 style="font-size: 2.5rem; line-height: 1.2;">{t['hero_title']}</h1>
         <p style="font-size: 1.1rem; color: #4B5563; margin-top: 15px;">{t['hero_sub']}</p>
     </div>
@@ -315,8 +315,8 @@ else:
         unsafe_allow_html=True,
     )
 
-    with st.container():
-        st.markdown(f'<div class="info-card">', unsafe_allow_html=True)
+    # Używamy natywnego kontenera Streamlit do ramki
+    with st.container(border=True):
         st.subheader(t["create_tab"])
 
         with st.form("create_party"):
@@ -326,7 +326,6 @@ else:
             with col1:
                 c_date = st.date_input(t["date_label"], format="DD.MM.YYYY")
             with col2:
-                # Etykieta Theme teraz będzie widoczna!
                 c_theme = st.selectbox(
                     t["theme_label"],
                     [
@@ -342,8 +341,12 @@ else:
                 )
 
             c_loc = st.text_input(t["loc_label"], placeholder=t["placeholder_loc"])
+
+            # Poprawione pole adresu - ukryty label, tylko placeholder
             c_addr = st.text_input(
-                placeholder=f'{t["addr_label"]} {t["placeholder_addr"]}'
+                label="Address",  # Label techniczny (wymagany), ale niewidoczny
+                placeholder=f'{t["addr_label"]} {t["placeholder_addr"]}',
+                label_visibility="collapsed",
             )
 
             st.markdown("---")
@@ -363,22 +366,20 @@ else:
                         "child_name": c_name,
                         "date": c_date.strftime("%d.%m.%Y"),
                         "location": c_loc,
-                        "address": c_addr,  # ZAPISUJEMY ADRES
+                        "address": c_addr,
                         "theme": c_theme,
                         "created_at": str(datetime.now()),
                     }
                     save_party(party_data)
 
-                    # Pamiętaj zmienić link na swój!
+                    # ADRES DO ZMIANY PO DEPLOYU
                     base_url = "https://party-hero-poc.streamlit.app"
-                    # base_url = "http://localhost:8501" # local address for testing
+                    # base_url = "http://localhost:8501"
 
                     final_link = f"{base_url}/?id={new_id}"
 
                     st.success(t["success_host"])
                     st.code(final_link)
-
-        st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown(
         """
